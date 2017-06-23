@@ -65,7 +65,8 @@ Here are the cost components related to actuation changes between each step:
         }
 ```
 
--
+---
+
 
 **Timestep Length and Elapsed Duration (N & dt)**
 
@@ -75,7 +76,8 @@ The prediction horizon T = N * dt is the duration over which future predictions 
 
 After several trial-and-errors with N = {25 30 35 20 15 10 5} and dt = {0.05 0.1 0.2}, I was satisified with the result performed at N=10 and dt=0.1, which results T=1.  The 0.1 for dt were preferred for it is the same as the latency.  
 
--
+---
+
 
 **Polynomial Fitting and MPC Preprocessing**
 
@@ -112,7 +114,8 @@ Prior to fitting the waypoints into a third degree polynomial, we convert the gl
 ```
 
 
--
+---
+
 
 **Model Predictive Control with Latency**
 
@@ -139,5 +142,5 @@ To compensate the latency, dt was selected as the same as the latency.  Also, th
     return results;
 ```
 
--
+---
 
