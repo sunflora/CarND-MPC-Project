@@ -1,16 +1,14 @@
 Udacity MPC Project 
 
-Resulting Video:
+Project Video:
 
 [![Udacity MPC Project](./../video/N10_dt0.1.png)](https://www.youtube.com/watch?v=tej4i4EK94I)
 
 **The Model**
 
-Here we discuss in detail the model, including the state, actuator and update equations.
+MPC stands for Model Predictive Control and it solves the task of finding a trajectory/lane by optimization.  The resulting optimal solution is the optimal trajectory.  It first simulates the different control inputs to predict different possible solutions and then select the solution with minimal cost. 
 
-MPC stands for Model Predictive Control and it solves the task of finding a trajectory by optimization.  The resulting optimal solution is the optimal trajectory.  It first simulates the different control inputs to predict different possible solutions and then select the solution with minimal cost. 
-
-Once the lowest cost trajectory were determined, the appropriate input is implemented for each step.  The rest of the calculated trajectory is thrown away as the new state will be used to calculate the new trajectory based on the input that was previously implemented. The input control is therefore constantly calculated based on the environment.  
+Once the trajectory with lowest cost is determined, the appropriate input is then implemented by the system for each step.  The rest of the calculated trajectories will be thrown away as the new state will be used to calculate the new trajectory based on the input that was previously implemented. The input control is therefore constantly calculated based on the new state.  
 
 The state vector includes:
 
@@ -21,12 +19,12 @@ The state vector includes:
 * delta: The current steering angle
 * a: The current acceleration (throttle)
 
-The control inputs:
+The control inputs are:
 
 * delta: steering angle
 * a: acceleration (throttle)
 
-Update equation:
+Here is the update equation:
 
 * Xt1 = Xt + Vt * cos(psi) * dt
 * Yt1 = Yt + Vt * sin(psi) * dt
@@ -70,9 +68,7 @@ Here are the cost components related to actuation changes between each step:
 
 **Timestep Length and Elapsed Duration (N & dt)**
 
-Here we discuss the reasoning behind the chosen N (timestep length) and dt (elapsed duration between timesteps) values were described. Additionally previous values tried is detailed below.
-
-The prediction horizon T = N * dt is the duration over which future predictions are made.  N is the number of timesteps in the horizon and dt is the time between each actuation.  We would like to have T as large as possible so that we can have longer horizon.  We would like dt to be as small as possible so we don't wait for a long time before the next actuation.  
+The prediction horizon T = N * dt is the duration over which future predictions are made.  N is the number of timesteps in the horizon and dt is the time between each actuation.  We would like to have a large enough T (such a few seconds in this case) so that we can have  a long enough horizon.  We also like dt to be as small as possible so we don't wait for a long time before the next actuation.  
 
 After several trial-and-errors with N = {25 30 35 20 15 10 5} and dt = {0.05 0.1 0.2}, I was satisified with the result performed at N=10 and dt=0.1, which results T=1.  The 0.1 for dt were preferred for it is the same as the latency.  
 
@@ -119,7 +115,7 @@ Prior to fitting the waypoints into a third degree polynomial, we convert the gl
 
 **Model Predictive Control with Latency**
 
-To compensate the latency, dt was selected as the same as the latency.  Also, the weighted averages of the last two delta and acceleration projections were used instead of just the most current one.  
+To compensate the latency, dt was selected to be the same as the latency.  Also, the weighted averages of the last two delta and acceleration projections were used (instead of just the most current one.)  
 
 ```
 
